@@ -92,7 +92,8 @@ class Application extends \OCP\AppFramework\App {
 			return new \OCA\Encryption\Crypto\Encryption(
 				$c->query('Crypt'),
 				$c->query('KeyManager'),
-				$c->query('Util'));
+				$c->query('Util'),
+				\OC::$server->getLogger());
 		});
 		$module = $container->query('EncryptionModule');
 		$this->encryptionManager->registerEncryptionModule($module);
