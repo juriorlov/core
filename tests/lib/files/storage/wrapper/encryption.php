@@ -21,6 +21,9 @@ class Encryption extends \Test\Files\Storage\Storage {
 			->disableOriginalConstructor()
 			->setMethods(['getDefaultEncryptionModule', 'getEncryptionModule', 'isEnabled'])
 			->getMock();
+		$encryptionUpdate = $this->getMockBuilder('\OC\Encryption\Update')
+			->disableOriginalConstructor()
+			->getMock();
 		$encryptionManager->expects($this->any())
 			->method('getDefaultEncryptionModule')
 			->willReturn($mockModule);
@@ -64,7 +67,7 @@ class Encryption extends \Test\Files\Storage\Storage {
 			'mountPoint' => '/',
 			'mount' => $mount
 		],
-			$encryptionManager, $util, $logger, $file, null, $keyStore
+			$encryptionManager, $util, $logger, $file, $encryptionUpdate, null, $keyStore
 		);
 	}
 
@@ -102,11 +105,12 @@ class EncryptionWrapper extends \OC\Files\Storage\Wrapper\Encryption {
 		\OC\Encryption\Util $util = null,
 		\OC\Log $logger = null,
 		\OC\Encryption\File $fileHelper = null,
+		\OC\Encryption\Update $update = null,
 		$uid = null,
 		$keyStore = null
 	) {
 		$this->keyStore = $keyStore;
-		parent::__construct($parameters, $encryptionManager, $util, $logger, $fileHelper, $uid);
+		parent::__construct($parameters, $encryptionManager, $util, $logger, $fileHelper, $update, $uid);
 	}
 
 	protected function getKeyStorage($encryptionModuleId) {

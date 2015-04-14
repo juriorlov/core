@@ -193,7 +193,14 @@ class Manager implements \OCP\Encryption\IManager {
 				$logger = \OC::$server->getLogger();
 				$uid = $user ? $user->getUID() : null;
 				$fileHelper = \OC::$server->getEncryptionFilesHelper();
-				return new Encryption($parameters, $manager, $util, $logger, $fileHelper, $uid);
+				$update = new \OC\Encryption\Update(
+					new \OC\Files\View(),
+					$util,
+					\OC\Files\Filesystem::getMountManager(),
+					$manager,
+					new \OC\Encryption\File($util),
+					$uid);
+				return new Encryption($parameters, $manager, $util, $logger, $fileHelper, $update, $uid);
 			} else {
 				return $storage;
 			}
