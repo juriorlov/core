@@ -38,7 +38,7 @@ class ManagerTest extends TestCase {
 		$em = $this->getMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn(0);
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule($em);
+		$this->manager->registerEncryptionModule(function() use ($em) {return $em;});
 		$this->assertFalse($this->manager->isEnabled());
 	}
 
@@ -57,9 +57,10 @@ class ManagerTest extends TestCase {
 		$em = $this->getMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn(0);
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule($em);
+
+		$this->manager->registerEncryptionModule(function () use ($em) { return $em;});
 		$this->assertSame(1, count($this->manager->getEncryptionModules()));
-		$this->manager->registerEncryptionModule($em);
+		$this->manager->registerEncryptionModule(function () use ($em) { return $em;});
 	}
 
 	public function testModuleUnRegistration() {
@@ -67,12 +68,14 @@ class ManagerTest extends TestCase {
 		$em = $this->getMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn(0);
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule($em);
+		$this->manager->registerEncryptionModule(function () use ($em) { return $em;});
 		$this->assertSame(1,
 			count($this->manager->getEncryptionModules())
 		);
-		$this->manager->unregisterEncryptionModule($em);
+
+		$this->manager->unregisterEncryptionModule(0);
 		$this->assertEmpty($this->manager->getEncryptionModules());
+
 	}
 
 	/**
@@ -84,7 +87,7 @@ class ManagerTest extends TestCase {
 		$em = $this->getMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn(0);
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule($em);
+		$this->manager->registerEncryptionModule(function () use ($em) { return $em;});
 		$this->assertSame(1, count($this->manager->getEncryptionModules()));
 		$this->manager->getEncryptionModule('unknown');
 	}
@@ -94,7 +97,7 @@ class ManagerTest extends TestCase {
 		$em = $this->getMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn(0);
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule($em);
+		$this->manager->registerEncryptionModule(function () use ($em) { return $em;});
 		$this->assertSame(1, count($this->manager->getEncryptionModules()));
 		$en0 = $this->manager->getEncryptionModule(0);
 		$this->assertEquals(0, $en0->getId());
@@ -105,7 +108,7 @@ class ManagerTest extends TestCase {
 		$em = $this->getMock('\OCP\Encryption\IEncryptionModule');
 		$em->expects($this->any())->method('getId')->willReturn(0);
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule($em);
+		$this->manager->registerEncryptionModule(function () use ($em) { return $em;});
 		$this->assertSame(1, count($this->manager->getEncryptionModules()));
 		$en0 = $this->manager->getEncryptionModule(0);
 		$this->assertEquals(0, $en0->getId());
