@@ -36,6 +36,7 @@ namespace OCP;
 
 /**
  * This class provides convenient functions to send the correct http response headers
+ * @deprecated Use AppFramework controllers instead and modify the response object
  */
 class Response {
 	/**
@@ -95,6 +96,7 @@ class Response {
 	/**
 	 * Send file as response, checking and setting caching headers
 	 * @param string $filepath of file to send
+	 * @deprecated Use \OCP\AppFramework\Http\StreamResponse or another AppFramework controller instead
 	 */
 	static public function sendFile( $filepath ) {
 		\OC_Response::sendFile( $filepath );
