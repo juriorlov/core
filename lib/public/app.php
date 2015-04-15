@@ -41,19 +41,6 @@ namespace OCP;
  */
 class App {
 	/**
-	 * Makes ownCloud aware of this app
-	 * @param array $data with all information
-	 * @return boolean
-	 *
-	 * @deprecated This method is deprecated. Do not call it anymore.
-	 * It'll remain in our public API for compatibility reasons.
-	 *
-	 */
-	public static function register( $data ) {
-		return true; // don't do anything
-	}
-
-	/**
 	 * Adds an entry to the navigation
 	 *
 	 * This function adds a new entry to the navigation visible to users. $data
