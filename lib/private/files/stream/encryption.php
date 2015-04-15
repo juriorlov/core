@@ -288,14 +288,18 @@ class Encryption extends Wrapper {
 		while (strlen($data) > 0) {
 			$remainingLength = strlen($data);
 
-			// set the cache to the current 6126 block
-			$this->readCache();
-
 			// for seekable streams the pointer is moved back to the beginning of the encrypted block
 			// flush will start writing there when the position moves to another block
 			$positionInFile = floor($this->position / $this->unencryptedBlockSize) *
 				$this->util->getBlockSize() + $this->util->getHeaderSize();
 			$resultFseek = parent::stream_seek($positionInFile);
+
+			// we only need to read the cache if fseek is supported from the back-end
+			if ($resultFseek) {
+				// set the cache to the current 6126 block and go back to the start position
+				$this->readCache();
+				parent::stream_seek($positionInFile);
+			}
 
 			// only allow writes on seekable streams, or at the end of the encrypted stream
 			if (!($this->readOnly) && ($resultFseek || $positionInFile === $this->size)) {
