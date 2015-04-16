@@ -22,8 +22,6 @@
 
 namespace Test\Files;
 
-use OC\User\NoUserException;
-
 class Filesystem extends \Test\TestCase {
 	/**
 	 * @var array tmpDirs
