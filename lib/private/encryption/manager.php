@@ -115,13 +115,17 @@ class Manager implements \OCP\Encryption\IManager {
 			}
 		} else { // get default module and return this
 				 // For now we simply return the first module until we have a way
-	             // to enable multiple modules and define a default module
-			$module = reset($this->encryptionModules);
-			if ($module) {
-				return $module;
-			} else {
-				$message = 'No encryption module registered';
-				throw new Exceptions\ModuleDoesNotExistsException($message);
+				 // to enable multiple modules and define a default module
+			try {
+				return $this->getDefaultEncryptionModule();
+			} catch (Exceptions\ModuleDoesNotExistsException $e) {
+				$module = reset($this->encryptionModules);
+				if ($module) {
+					return $module;
+				} else {
+					$message = 'No encryption module registered';
+					throw new Exceptions\ModuleDoesNotExistsException($message);
+				}
 			}
 		}
 	}
