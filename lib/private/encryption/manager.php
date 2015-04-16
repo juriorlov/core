@@ -71,14 +71,13 @@ class Manager implements \OCP\Encryption\IManager {
 		if (isset($this->encryptionModules[$id])) {
 			throw new Exceptions\ModuleAlreadyExistsException($id, $name);
 		}
+		$this->encryptionModules[$id] = $module;
 
 		$defaultEncryptionModuleId = $this->getDefaultEncryptionModuleId();
 
 		if (empty($defaultEncryptionModuleId)) {
 			$this->setDefaultEncryptionModule($id);
 		}
-
-		$this->encryptionModules[$id] = $module;
 	}
 
 	/**
@@ -157,6 +156,7 @@ class Manager implements \OCP\Encryption\IManager {
 	 */
 	public function setDefaultEncryptionModule($moduleId) {
 		try {
+			$this->getEncryptionModule($moduleId);
 			$this->config->setAppValue('core', 'default_encryption_module', $moduleId);
 			return true;
 		} catch (\Exception $e) {
